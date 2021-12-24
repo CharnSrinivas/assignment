@@ -1,25 +1,67 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const time_to_show_ad = 2;
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show_img: false,
+      img_shown: false
+    }
+  }
+
+  componentDidMount() {
+    const video = document.querySelector('video');
+    video.addEventListener('loadeddata', () => {
+      video.play();
+      const interval_id = setInterval(() => {
+        console.log("in interval");
+        if (video && video.currentTime >= time_to_show_ad && video.currentTime <= time_to_show_ad + 1) {
+
+          this.setState({ show_img: true, img_shown: true });
+        }
+        if (this.state.img_shown) { clearInterval(interval_id); }
+      }, 1000)
+    })
+  }
+
+  onAdClick = () => {
+    document.querySelector('video').pause();
+    window.open('https://j.mp/3IDGsfB', "_blank")
+  }
+
+  render() {
+
+    return (
+      <div id='main' style={{
+        position: 'relative'
+      }}>
+        {
+          this.state.show_img &&
+          <img
+            style={{
+              position: 'absolute',
+              left: "50%",
+              top: "50%",
+              transform: 'translate(-50%,-50%)',
+              cursor: 'pointer',
+              zIndex:3
+
+            }}
+            src='https://i.ibb.co/JjNsyft/one-removebg-preview.png'
+            onClick={() => {
+
+              document.querySelector('video').pause();
+              window.open('https://j.mp/3IDGsfB', "_blank")
+            }} />
+        }
+        <video src="/video.mp4" controls autoPlay >
+        </video>
+      </div>
+    );
+  }
 }
 
 export default App;
