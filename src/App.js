@@ -2,13 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
-const time_to_show_ad = 2;
+const time_to_show_ad = 10;
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       show_img: false,
-      img_shown: false
     }
   }
 
@@ -20,9 +19,9 @@ class App extends React.Component {
         console.log("in interval");
         if (video && video.currentTime >= time_to_show_ad && video.currentTime <= time_to_show_ad + 1) {
 
-          this.setState({ show_img: true, img_shown: true });
+          this.setState({ show_img: true});
         }
-        if (this.state.img_shown) { clearInterval(interval_id); }
+        if (this.state.show_img) { clearInterval(interval_id); }
       }, 1000)
     })
   }
